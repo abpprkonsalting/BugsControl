@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen().AddAutoMapper(typeof(AutoMapping));
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IBugService, BugService>();
 
 var app = builder.Build();
 
