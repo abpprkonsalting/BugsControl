@@ -3,6 +3,9 @@ using API.Contracts.Views.Bugs;
 using API.DAL;
 using AutoMapper;
 using API.Models;
+using System.Linq.Expressions;
+using API.Contracts.Responses.Bugs;
+using System.Globalization;
 
 namespace API.Services
 {
@@ -17,6 +20,13 @@ namespace API.Services
         /// <param name="input"></param>
         /// <returns></returns>
         BugCreateResponseView Create(BugCreateRequest input);
+
+        /// <summary>
+        /// Bug list by project, user & date range
+        /// </summary>
+        /// <returns></returns>
+        BugListResponseView GetListByAllParameters(string projectId,string userId,
+                                                string start_date, string end_date);
 
         ///// <summary>
         ///// Find some Bug by his Id
@@ -46,7 +56,7 @@ namespace API.Services
         //Task<BugDeleteResponseView> Delete(BugDeleteRequest input);
     }
 
-   
+
     public class BugService : IBugService
     {
         private readonly IMapper _mapper;
@@ -75,6 +85,29 @@ namespace API.Services
             }
             catch(Exception ex) {
                 return result.ToFail<BugCreateResponseView>(ex);
+            }
+        }
+
+        public BugListResponseView GetListByAllParameters(string projectId, string userId,
+                                                string start_date, string end_date)
+        {
+            DateTime startOfInterval = DateTime.ParseExact(start_date, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            DateTime endOfInterval = DateTime.ParseExact(end_date, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            var response = new BugListResponseView();
+            try
+            {
+                Expression<Func<Bug, bool>> filter = bug => bug.ProjectId == projectId && bug.UserId == userId &&
+                                                     bug.CreationDate >= startOfInterval && bug.CreationDate <= endOfInterval;
+                var bugs = _unitOfWork.BugsRepository.Get(filter, null, "Project,User");
+                foreach (var entity in bugs)
+                {
+                    response.Data.Add(_mapper.Map<BugDataResponse>(entity));
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return response.ToFail<BugListResponseView>(ex);
             }
         }
 
