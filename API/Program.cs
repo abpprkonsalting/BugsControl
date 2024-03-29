@@ -12,7 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BugsControlContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen().AddAutoMapper(typeof(AutoMapping));
+
 
 var app = builder.Build();
 
