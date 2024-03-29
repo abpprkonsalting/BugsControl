@@ -5,7 +5,7 @@ using AutoMapper;
 using API.Models;
 using System.Linq.Expressions;
 using API.Contracts.Responses.Bugs;
-using System.Globalization;
+using API.Infrastructure.Extensions;
 
 namespace API.Services
 {
@@ -96,8 +96,19 @@ namespace API.Services
             var response = new BugListResponseView();
             try
             {
-                Expression<Func<Bug, bool>> filter = bug => bug.ProjectId == projectId && bug.UserId == userId &&
-                                                     bug.CreationDate >= startOfInterval && bug.CreationDate <= endOfInterval;
+                Expression<Func<Bug, bool>> filter = null;
+                if (projectId != null)
+                    filter = bug => bug.ProjectId == projectId;
+                if (userId != null)
+                    filter = filter == null ? bug => bug.UserId == userId : 
+                                            filter.And(bug => bug.UserId == userId);
+                if (startOfInterval != null)
+                    filter = filter == null ? bug => bug.CreationDate >= startOfInterval : 
+                                            filter.And(bug => bug.CreationDate >= startOfInterval);
+                if (endOfInterval != null)
+                    filter = filter == null ? bug => bug.CreationDate <= endOfInterval :
+                                            filter.And(bug => bug.CreationDate <= endOfInterval);
+
                 var bugs = _unitOfWork.BugsRepository.Get(filter, null, "Project,User");
                 foreach (var entity in bugs)
                 {
