@@ -25,8 +25,8 @@ namespace API.Services
         /// Bug list by project, user & date range
         /// </summary>
         /// <returns></returns>
-        BugListResponseView GetListByAllParameters(string projectId,string userId,
-                                                string start_date, string end_date);
+        BugListResponseView GetListByParameters(string? projectId,string? userId,
+                                                DateTime? startOfInterval, DateTime? endOfInterval);
 
         ///// <summary>
         ///// Find some Bug by his Id
@@ -88,11 +88,9 @@ namespace API.Services
             }
         }
 
-        public BugListResponseView GetListByAllParameters(string projectId, string userId,
-                                                string start_date, string end_date)
+        public BugListResponseView GetListByParameters(string? projectId, string? userId,
+                                                DateTime? startOfInterval, DateTime? endOfInterval)
         {
-            DateTime startOfInterval = DateTime.ParseExact(start_date, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
-            DateTime endOfInterval = DateTime.ParseExact(end_date, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
             var response = new BugListResponseView();
             try
             {
