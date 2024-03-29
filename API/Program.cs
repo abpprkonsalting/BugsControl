@@ -1,4 +1,6 @@
 using API;
+using API.DAL;
+using API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<BugsControlContext>(options => options.UseSqlServe
 
 builder.Services.AddSwaggerGen().AddAutoMapper(typeof(AutoMapping));
 
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 

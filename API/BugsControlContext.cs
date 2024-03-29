@@ -6,6 +6,10 @@ namespace API
 {
     public partial class BugsControlContext : DbContext
     {
+        public BugsControlContext()
+        {
+        }
+
         public BugsControlContext(DbContextOptions<BugsControlContext> options): base(options)
         {
         }
