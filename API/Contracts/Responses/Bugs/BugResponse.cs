@@ -15,9 +15,11 @@ public class BugResponse
     /// </summary>
     public string? Description { get; set; }
 
-    /// <summary>
-    /// Bug creation date
-    /// </summary>
+    // <summary>
+    // Bug creation date
+    // </summary>
     public DateTime CreationDate { get; set; }
+
+    public string UserName { get; set; }
 
 }

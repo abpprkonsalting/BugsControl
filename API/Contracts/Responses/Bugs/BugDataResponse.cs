@@ -1,4 +1,4 @@
-using API.Contracts.Responses.Users;
+using API.Contracts.Responses.Projects;
 
 namespace API.Contracts.Responses.Bugs;
 
@@ -10,10 +10,10 @@ public class BugDataResponse : BugResponse
     /// <summary>
     /// user of this bug
     /// </summary>
-    public UserResponse User { get; set; }
+    //public UserResponse User { get; set; }
 
     /// <summary>
     /// project of this bug
     /// </summary>
-    //public ProjectResponse Project { get; set; }
+    public ProjectResponse Project { get; set; }
 }
