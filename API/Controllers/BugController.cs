@@ -1,4 +1,6 @@
 ﻿using API.Contracts.Requests.Bugs;
+using API.Contracts.Views.Bugs;
+using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,35 +16,37 @@ namespace API.Controllers
 
         public BugController(IBugService service) => _service = service;
 
-        // GET: api/<BugController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
-        // GET api/<BugController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<BugController>
+        // POST <BugController>
         [HttpPost]
         public void Post([FromBody] BugCreateRequest input) =>
             ToWithStatus(_service.Create(input));
 
-        // PUT api/<BugController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE api/<BugController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        // GET: <BugController>
+        [HttpGet("bugs")]
+        public void Get(string project_id, string user_id
+                                        , string start_date, string end_date) =>
+            ToWithStatus(_service.GetListByAllParameters(project_id, user_id,
+                                                      start_date,end_date));
+
+        //// GET api/<BugController>/5
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
+
+        //// PUT api/<BugController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
+
+        //// DELETE api/<BugController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }
