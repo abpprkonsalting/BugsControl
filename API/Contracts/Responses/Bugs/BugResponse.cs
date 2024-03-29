@@ -8,7 +8,7 @@ public class BugResponse
     /// <summary>
     /// Bug Id
     /// </summary>
-    public int Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Description
